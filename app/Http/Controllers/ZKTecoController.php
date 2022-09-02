@@ -20,10 +20,11 @@ class ZKTecoController extends Controller
         // $zk->disableDevice();
         
         if ($zk->connect()){
-            $users = $zk->getUser();
+            // $users = $zk->getUser();
             $attendance = $zk->getAttendance();
             // dd($attendance);
-            return view('absensi', ['users' => $users]);
+            // return view('vendor.zkteco.absensi', ['users' => $users]);
+            return view('vendor.zkteco.attendance', ['attendances' => $attendance]);
         }
     }
 
