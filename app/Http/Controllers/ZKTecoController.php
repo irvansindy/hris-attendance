@@ -16,7 +16,6 @@ class ZKTecoController extends Controller
      */
     public function index()
     {
-      
         $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
         // $zk->connect();
         // $zk->disableDevice();
@@ -49,13 +48,13 @@ class ZKTecoController extends Controller
                     'photo'=>'',
                     'geolocation'=>'',
                     'att_on'=>1,
-                    'created_by'=>'udie21',
+                    'created_by'=>'ICT',
                     'modified_by'=>'-',
                     'modified_date'=>'',
                     'created_date'=>date('Y-m-d H:i:s'),
 
                 ];
-              array_push($array_post,$array);
+                array_push($array_post,$array);
             }
             // dd($array_post);
             HrisAttendance::insert($array_post);
