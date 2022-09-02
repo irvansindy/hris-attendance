@@ -76,7 +76,7 @@ class ApiHrisController extends Controller
                 $created_at = strtotime($item['timestamp']);
                 $array =[
                     'attendanceid'=>$item['uid'],
-                    'attenddata'=>$item['id'],
+                    'attenddata'=>$item['id'].date('Y',$created_at).date('d',$created_at).date('H',$created_at).date('i',$created_at).date('s',$created_at),
                     // 'state'=>$item['state'],
                     'attend_date'=>$item['timestamp'],
                     'day'=>date('d',$created_at),
@@ -86,26 +86,35 @@ class ApiHrisController extends Controller
                     'minute'=>date('i',$created_at),
                     'second'=>date('s',$created_at),
                     'status'=>$item['type'],
-                    'machineno'=>1,
-                    'machine_code'=>1,
+                    'machineno'=>0,
+                    'machine_code'=>'FINGERPRINT',
                     'uploadstatus'=>1,
                     'company_id'=>1,
                     'remark'=>1,
                     'photo'=>'',
                     'geolocation'=>'',
                     'att_on'=>1,
-                    'created_by'=>'ICT',
-                    'modified_by'=>'-',
-                    'modified_date'=>'',
+                    'created_by'=>$item['id'],
+                    'modified_by'=>$item['id'],
+                    'modified_date'=>date('Y-m-d H:i:s'),
                     'created_date'=>date('Y-m-d H:i:s'),
 
                 ];
                 array_push($array_post,$array);
             }
+            dd($array_post);
             $insert = HrisAttendance::insert($array_post);
         }
         return Helper::success(
             $insert,
+            'Data berhasil diimport ke db'
+        );
+    }
+    public function all()
+    {
+        $get_data = HrisAttendance::all();
+        return Helper::success(
+            $get_data,
             'Data berhasil diimport ke db'
         );
     }
