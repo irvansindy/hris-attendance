@@ -12,9 +12,12 @@ class ApiHrisController extends Controller
 {
     public function getAttendance(Request $request)
     {
-        $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
-        // $zk->connect();
-        // $zk->disableDevice();
+        // T8 Office
+        $zk = new ZKTeco('192.168.1.200', 4370, 'TCP');
+        // Karawang Office
+        // $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
+        // Head Office
+        // $zk = new ZKTeco('192.168.1.19', 4370, 'TCP');
         
         if ($zk->connect())
         {
