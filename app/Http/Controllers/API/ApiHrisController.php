@@ -16,6 +16,7 @@ class ApiHrisController extends Controller
         $zk = new ZKTeco('192.168.1.200', 4370, 'TCP');
         // Karawang Office
         // $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
+        // $zk = new ZKTeco('192.168.10.3', 4370, 'TCP');
         // Head Office
         // $zk = new ZKTeco('192.168.1.19', 4370, 'TCP');
         
@@ -57,6 +58,12 @@ class ApiHrisController extends Controller
                 array_push($array_post,$array);
             }
         }
+        else{
+          dd('cant connect this ip');
+        }
+
+        
+    
         return Helper::success(
             $array_post,
             'Data berhasil diambil'
@@ -76,10 +83,14 @@ class ApiHrisController extends Controller
             $array_post=[];
             foreach($attendance as $item)
             {
+                // Sistem akan memvalidasi, jika data ada, maka data tersebut tidak di insert
+              $validasi_1 = HrisAttendance::where('attend_date', $item['timestamp'])->where('created_by', $item['id'])->count();
+              
+              if($validasi_1 == 0 ){
                 $created_at = strtotime($item['timestamp']);
                 $array =[
                     'attendanceid'=>$item['uid'],
-                    'attenddata'=>$item['id'].date('Y',$created_at).date('d',$created_at).date('H',$created_at).date('i',$created_at).date('s',$created_at),
+                    'attenddata'=>$item['id'].$created_at,
                     // 'state'=>$item['state'],
                     'attend_date'=>$item['timestamp'],
                     'day'=>date('d',$created_at),
@@ -103,11 +114,18 @@ class ApiHrisController extends Controller
                     'created_date'=>date('Y-m-d H:i:s'),
 
                 ];
-                array_push($array_post,$array);
+                    array_push($array_post,$array);
+                }
             }
-            dd($array_post);
-            $insert = HrisAttendance::insert($array_post);
+            // dd($array_post);
+            if($array_post !=null)
+            {
+                $insert = HrisAttendance::insert($array_post);
+            }else{
+                $insert ='Data tidak ada yang diimport';
+            }
         }
+        // dd($array_post);
         return Helper::success(
             $insert,
             'Data berhasil diimport ke db'
@@ -118,7 +136,7 @@ class ApiHrisController extends Controller
         $get_data = HrisAttendance::all();
         return Helper::success(
             $get_data,
-            'Data berhasil diimport ke db'
+            'Berhasil get data'
         );
     }
 }
