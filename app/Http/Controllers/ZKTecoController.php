@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Rats\Zkteco\Lib\ZKTeco;
-// use Laradevsbd\Zkteco\Http\Library\ZktecoLib;
+use App\Models\HrisAttendance;
+use App\Helpers\ResponseFormatter as HelperResponseAPI;
 
 class ZKTecoController extends Controller
 {
@@ -22,10 +23,67 @@ class ZKTecoController extends Controller
         if ($zk->connect()){
             // $users = $zk->getUser();
             $attendance = $zk->getAttendance();
-            // dd($attendance);
+            $array = [];
+            $array_post = [];
+            foreach($attendance as $item)
+            {
+                $validasi_1 = HrisAttendance::where('attend_date', $item['timestamp'])->where('created_by', $item['id'])->count();
+                if($validasi_1 == 0) {
+                    $created_at = strtotime($item['timestamp']);
+                    
+                    $array = [
+                        'attendanceid'=>$item['uid'],
+                        'attenddata'=>$item['id'].$created_at,
+                        // 'state'=>$item['state'],
+                        'attend_date'=>$item['timestamp'],
+                        'day'=>date('d',$created_at),
+                        'month'=>date('m',$created_at),
+                        'year'=>date('Y',$created_at),
+                        'hour'=>date('H',$created_at),
+                        'minute'=>date('i',$created_at),
+                        'second'=>date('s',$created_at),
+                        'status'=>$item['type'],
+                        'machineno'=>0,
+                        'machine_code'=>'FINGERPRINT',
+                        'uploadstatus'=>1,
+                        'company_id'=>1,
+                        'remark'=>1,
+                        'photo'=>'',
+                        'geolocation'=>'',
+                        'att_on'=>1,
+                        'created_by'=>$item['id'],
+                        'modified_by'=>$item['id'],
+                        'modified_date'=>date('Y-m-d H:i:s'),
+                        'created_date'=>date('Y-m-d H:i:s'),
+                    ];
+                    array_push($array_post,$array);
+                }
+            }
+
+            if($array_post != NULL) {
+                // dd($array_post);
+                $insert = HrisAttendance::insertOrIgnore($array_post);
+                return HelperResponseAPI::success(
+                    $insert,
+                    'Data berhasil diimport ke Database'
+                );
+            } else {
+                return HelperResponseAPI::error(
+                    NULL,
+                    'Data gagal diimport ke Database',
+                    404
+                );
+            }
             // return view('vendor.zkteco.absensi', ['users' => $users]);
             return view('vendor.zkteco.attendance', ['attendances' => $attendance]);
+        } elseif ($zk->disconnect()) {
+            return HelperResponseAPI::error(
+                NULL,
+                'Gagal untuk koneksi ke IP',
+                500
+            );
         }
+
     }
 
     /**

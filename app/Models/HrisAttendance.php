@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class HrisAttendance extends Model
 {
-    // use HasFactory,softDeletes;
-    // protected $table = "hris_attendances";
-    protected $table = "hrdattendancetemp";
+    use HasFactory;
+    // use softDeletes;
+    protected $table = "hris_attendances";
+    // protected $table = "hrdattendancetemp";
     protected $guarded = [];
 }

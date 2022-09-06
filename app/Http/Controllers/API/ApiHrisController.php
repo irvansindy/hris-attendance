@@ -13,7 +13,9 @@ class ApiHrisController extends Controller
     public function getAttendance(Request $request)
     {
         // T8 Office
-        $zk = new ZKTeco('192.168.1.200', 4370, 'TCP');
+        // $zk = new ZKTeco('192.168.1.200', 4370, 'TCP');
+        // Cimanggis
+        // $zk = new ZKTeco('192.168.2.01', 4370, 'TCP');
         // Karawang Office
         // $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
         // $zk = new ZKTeco('192.168.10.3', 4370, 'TCP');
@@ -25,11 +27,12 @@ class ApiHrisController extends Controller
             // $users = $zk->getUser();
             $attendance = $zk->getAttendance();
             // dd($attendance);
+            // dd($attendance);
             $array_post=[];
             foreach($attendance as $item)
             {
                 $created_at = strtotime($item['timestamp']);
-                $array =[
+                $array = [
                     'attendanceid'=>$item['uid'],
                     'attenddata'=>$item['id'],
                     // 'state'=>$item['state'],
@@ -57,23 +60,22 @@ class ApiHrisController extends Controller
                 ];
                 array_push($array_post,$array);
             }
+            return Helper::success(
+                $array_post,
+                'Data berhasil diambil'
+            );
         }
         else{
-          dd('cant connect this ip');
+            return HelperResponseAPI::error(
+                NULL,
+                'Gagal untuk koneksi ke IP',
+                500
+            );
         }
-
-        
-    
-        return Helper::success(
-            $array_post,
-            'Data berhasil diambil'
-        );
     }
 
-    public function storeAttendance(){
+    public function storeAttendanceKarawang(){
         $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
-        // $zk->connect();
-        // $zk->disableDevice();
         
         if ($zk->connect())
         {
@@ -83,53 +85,59 @@ class ApiHrisController extends Controller
             $array_post=[];
             foreach($attendance as $item)
             {
-                // Sistem akan memvalidasi, jika data ada, maka data tersebut tidak di insert
-              $validasi_1 = HrisAttendance::where('attend_date', $item['timestamp'])->where('created_by', $item['id'])->count();
-              
-              if($validasi_1 == 0 ){
-                $created_at = strtotime($item['timestamp']);
-                $array =[
-                    'attendanceid'=>$item['uid'],
-                    'attenddata'=>$item['id'].$created_at,
-                    // 'state'=>$item['state'],
-                    'attend_date'=>$item['timestamp'],
-                    'day'=>date('d',$created_at),
-                    'month'=>date('m',$created_at),
-                    'year'=>date('Y',$created_at),
-                    'hour'=>date('H',$created_at),
-                    'minute'=>date('i',$created_at),
-                    'second'=>date('s',$created_at),
-                    'status'=>$item['type'],
-                    'machineno'=>0,
-                    'machine_code'=>'FINGERPRINT',
-                    'uploadstatus'=>1,
-                    'company_id'=>1,
-                    'remark'=>1,
-                    'photo'=>'',
-                    'geolocation'=>'',
-                    'att_on'=>1,
-                    'created_by'=>$item['id'],
-                    'modified_by'=>$item['id'],
-                    'modified_date'=>date('Y-m-d H:i:s'),
-                    'created_date'=>date('Y-m-d H:i:s'),
-
-                ];
+            // Sistem akan memvalidasi, jika data ada, maka data tersebut tidak di insert
+            $validasi_1 = HrisAttendance::where('attend_date', $item['timestamp'])->where('created_by', $item['id'])->count();
+            // dd($validasi_1);
+                if($validasi_1 == 0 ){
+                    $created_at = strtotime($item['timestamp']);
+                    $array =[
+                        'attendanceid'=>$item['uid'],
+                        'attenddata'=>$item['id'].$created_at,
+                        // 'state'=>$item['state'],
+                        'attend_date'=>$item['timestamp'],
+                        'day'=>date('d',$created_at),
+                        'month'=>date('m',$created_at),
+                        'year'=>date('Y',$created_at),
+                        'hour'=>date('H',$created_at),
+                        'minute'=>date('i',$created_at),
+                        'second'=>date('s',$created_at),
+                        'status'=>$item['type'],
+                        'machineno'=>0,
+                        'machine_code'=>'FINGERPRINT',
+                        'uploadstatus'=>1,
+                        'company_id'=>1,
+                        'remark'=>1,
+                        'photo'=>'',
+                        'geolocation'=>'',
+                        'att_on'=>1,
+                        'created_by'=>$item['id'],
+                        'modified_by'=>$item['id'],
+                        'modified_date'=>date('Y-m-d H:i:s'),
+                        'created_date'=>date('Y-m-d H:i:s'),
+                    ];
                     array_push($array_post,$array);
                 }
             }
-            // dd($array_post);
-            if($array_post !=null)
-            {
-                $insert = HrisAttendance::insert($array_post);
-            }else{
-                $insert ='Data tidak ada yang diimport';
+            if($array_post != NULL) {
+                $insert = HrisAttendance::insertOrIgnore($array_post);
+                return Helper::success(
+                    $insert,
+                    'Data berhasil di-import ke Database'
+                );
+            } else {
+                return Helper::error(
+                    NULL,
+                    'Data gagal diimport ke Database',
+                    404
+                );
             }
+        } else {
+            return Helper::error(
+                NULL,
+                'Gagal untuk koneksi ke IP',
+                500
+            );
         }
-        // dd($array_post);
-        return Helper::success(
-            $insert,
-            'Data berhasil diimport ke db'
-        );
     }
     public function all()
     {

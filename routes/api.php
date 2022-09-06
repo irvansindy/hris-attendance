@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('getAttendance', [ApiHrisController::class, 'getAttendance'])->name('getAttendance');
-Route::post('storeAttendance', [ApiHrisController::class, 'storeAttendance'])->name('storeAttendance');
+Route::post('storeAttendanceKarawang', [ApiHrisController::class, 'storeAttendanceKarawang'])->name('storeAttendanceKarawang');
 Route::get('all', [ApiHrisController::class, 'all'])->name('all');
