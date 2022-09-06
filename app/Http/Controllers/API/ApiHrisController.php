@@ -17,7 +17,7 @@ class ApiHrisController extends Controller
         // Cimanggis
         // $zk = new ZKTeco('192.168.2.01', 4370, 'TCP');
         // Karawang Office
-        // $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
+        $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
         // $zk = new ZKTeco('192.168.10.3', 4370, 'TCP');
         // Head Office
         // $zk = new ZKTeco('192.168.1.19', 4370, 'TCP');
@@ -31,7 +31,8 @@ class ApiHrisController extends Controller
             $array_post=[];
             foreach($attendance as $item)
             {
-                $created_at = strtotime($item['timestamp']);
+                $created_at = date('YmdHis',$item['timestamp']);
+                dd($created_at);
                 $array = [
                     'attendanceid'=>$item['uid'],
                     'attenddata'=>$item['id'],
@@ -66,7 +67,7 @@ class ApiHrisController extends Controller
             );
         }
         else{
-            return HelperResponseAPI::error(
+            return Helper::error(
                 NULL,
                 'Gagal untuk koneksi ke IP',
                 500
@@ -79,21 +80,18 @@ class ApiHrisController extends Controller
         
         if ($zk->connect())
         {
-            // $users = $zk->getUser();
             $attendance = $zk->getAttendance();
-            // dd($attendance);
             $array_post=[];
             foreach($attendance as $item)
             {
             // Sistem akan memvalidasi, jika data ada, maka data tersebut tidak di insert
             $validasi_1 = HrisAttendance::where('attend_date', $item['timestamp'])->where('created_by', $item['id'])->count();
-            // dd($validasi_1);
                 if($validasi_1 == 0 ){
                     $created_at = strtotime($item['timestamp']);
+                    $formatDate = date('YmdHis',$created_at);
                     $array =[
                         'attendanceid'=>$item['uid'],
-                        'attenddata'=>$item['id'].$created_at,
-                        // 'state'=>$item['state'],
+                        'attenddata'=>$item['id'].$formatDate,
                         'attend_date'=>$item['timestamp'],
                         'day'=>date('d',$created_at),
                         'month'=>date('m',$created_at),
@@ -108,7 +106,7 @@ class ApiHrisController extends Controller
                         'company_id'=>1,
                         'remark'=>1,
                         'photo'=>'',
-                        'geolocation'=>'',
+                        'geolocation'=>'KARAWANG',
                         'att_on'=>1,
                         'created_by'=>$item['id'],
                         'modified_by'=>$item['id'],
