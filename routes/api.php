@@ -25,4 +25,6 @@ Route::post('storeAttendanceKarawang2', [ApiHrisController::class, 'storeAttenda
 Route::post('storeAttendanceHO', [ApiHrisController::class, 'storeAttendanceHO'])->name('storeAttendanceHO');
 Route::post('storeAttendanceT8', [ApiHrisController::class, 'storeAttendanceT8'])->name('storeAttendanceT8');
 Route::post('storeAttendancCimanggisSecurityKanan', [ApiHrisController::class, 'storeAttendancCimanggisSecurityKanan'])->name('storeAttendancCimanggisSecurityKanan');
+Route::post('storeAttendancCimanggisSecurityKiri', [ApiHrisController::class, 'storeAttendancCimanggisSecurityKiri'])->name('storeAttendancCimanggisSecurityKiri');
+Route::post('storeAttendancCimanggisLobby', [ApiHrisController::class, 'storeAttendancCimanggisLobby'])->name('storeAttendancCimanggisLobby');
 Route::get('all', [ApiHrisController::class, 'all'])->name('all');
