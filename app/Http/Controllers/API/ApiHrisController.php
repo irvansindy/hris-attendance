@@ -76,7 +76,7 @@ class ApiHrisController extends Controller
             );
         }
     }
-    // port 03
+    // karawang port 03
     public function storeAttendanceKarawang(){
         $zk = new ZKTeco('192.168.10.3', 4370, 'TCP');
         
@@ -119,28 +119,27 @@ class ApiHrisController extends Controller
                 }
             }
             if($array_post != NULL) {
-                $insert = HrisAttendance::insertOrIgnore($array_post);
+                $insert = HrisAttendance::insert($array_post);
                 return Helper::success(
                     $insert,
-                    'Data berhasil di-import ke Database'
+                    'Data attendance Kantor Karawang IP 192.168.10.3 berhasil di-import ke Database'
                 );
             } else {
                 return Helper::error(
                     NULL,
-                    'Data gagal diimport ke Database',
+                    'Data gagal di-import ke Database',
                     404
                 );
             }
         } else {
             return Helper::error(
                 NULL,
-                'Gagal untuk koneksi ke IP',
+                'Gagal untuk koneksi ke IP 192.168.10.3',
                 500
             );
         }
     }
-// Karawang
-    // port 04
+    // Karawang port 04
     public function storeAttendanceKarawang2(){
         $zk = new ZKTeco('192.168.10.4', 4370, 'TCP');
         dd($zk);
@@ -183,27 +182,27 @@ class ApiHrisController extends Controller
                 }
             }
             if($array_post != NULL) {
-                $insert = HrisAttendance::insertOrIgnore($array_post);
+                $insert = HrisAttendance::insert($array_post);
                 return Helper::success(
                     $insert,
-                    'Data berhasil di-import ke Database'
+                    'Data attendance Kantor Karawang IP 192.168.10.4 berhasil di-import ke Database'
                 );
             } else {
                 return Helper::error(
                     NULL,
-                    'Data gagal diimport ke Database',
+                    'Data gagal di-import ke Database',
                     404
                 );
             }
         } else {
             return Helper::error(
                 NULL,
-                'Gagal untuk koneksi ke IP',
+                'Gagal untuk koneksi ke IP 192.168.10.4',
                 500
             );
         }
     }
-// T8
+    // T8
     public function storeAttendanceT8(){
         $zk = new ZKTeco('192.168.1.200', 4370, 'TCP');
         
@@ -246,10 +245,10 @@ class ApiHrisController extends Controller
                 }
             }
             if($array_post != NULL) {
-                $insert = HrisAttendance::insertOrIgnore($array_post);
+                $insert = HrisAttendance::insert($array_post);
                 return Helper::success(
                     $insert,
-                    'Data berhasil di-import ke Database'
+                    'Data attendance Kantor T8 IP 192.168.1.200 berhasil di-import ke Database'
                 );
             } else {
                 return Helper::error(
@@ -261,12 +260,12 @@ class ApiHrisController extends Controller
         } else {
             return Helper::error(
                 NULL,
-                'Gagal untuk koneksi ke IP',
+                'Gagal untuk koneksi ke IP 192.168.1.200',
                 500
             );
         }
     }
-// HO
+    // HO
     public function storeAttendanceHO(){
             $zk = new ZKTeco('192.168.1.19', 4370, 'TCP');
             
@@ -309,29 +308,28 @@ class ApiHrisController extends Controller
                     }
                 }
                 if($array_post != NULL) {
-                    $insert = HrisAttendance::insertOrIgnore($array_post);
+                    $insert = HrisAttendance::insert($array_post);
                     return Helper::success(
                         $insert,
-                        'Data berhasil di-import ke Database'
+                        'Data attendance Kantor Pusat IP 192.168.1.19 berhasil di-import ke Database'
                     );
                 } else {
                     return Helper::error(
                         NULL,
-                        'Data gagal diimport ke Database',
+                        'Data gagal di-import ke Database',
                         404
                     );
                 }
             } else {
                 return Helper::error(
                     NULL,
-                    'Gagal untuk koneksi ke IP',
+                    'Gagal untuk koneksi ke IP 192.168.1.19',
                     500
                 );
             }
     }
-
     // Cimanggis
-    public function storeAttendancCimanggisLobby()
+    public function storeAttendanceCimanggisLobby()
     {
         $zk = new ZKTeco('192.168.2.250', 4370, 'TCP');
         
@@ -374,27 +372,27 @@ class ApiHrisController extends Controller
                 }
             }
             if($array_post != NULL) {
-                $insert = HrisAttendance::insertOrIgnore($array_post);
+                $insert = HrisAttendance::insert($array_post);
                 return Helper::success(
                     $insert,
-                    'Data berhasil di-import ke Database'
+                    'Data attendance Kantor Cimanggis IP 192.168.2.250 berhasil di-import ke Database'
                 );
             } else {
                 return Helper::error(
                     NULL,
-                    'Data gagal diimport ke Database',
+                    'Data gagal di-import ke Database',
                     404
                 );
             }
         } else {
             return Helper::error(
                 NULL,
-                'Gagal untuk koneksi ke IP',
+                'Gagal untuk koneksi ke IP 192.168.2.250',
                 500
             );
         }
     }
-    public function storeAttendancCimanggisSecurityKiri()
+    public function storeAttendanceCimanggisSecurityKiri()
     {
         $zk = new ZKTeco('192.168.2.201', 4370, 'TCP');
         
@@ -437,27 +435,27 @@ class ApiHrisController extends Controller
                 }
             }
             if($array_post != NULL) {
-                $insert = HrisAttendance::insertOrIgnore($array_post);
+                $insert = HrisAttendance::insert($array_post);
                 return Helper::success(
                     $insert,
-                    'Data berhasil di-import ke Database'
+                    'Data attendance Kantor Cimanggis IP 192.168.2.201 berhasil di-import ke Database'
                 );
             } else {
                 return Helper::error(
                     NULL,
-                    'Data gagal diimport ke Database',
+                    'Data gagal di-import ke Database',
                     404
                 );
             }
         } else {
             return Helper::error(
                 NULL,
-                'Gagal untuk koneksi ke IP',
+                'Gagal untuk koneksi ke IP 192.168.2.201',
                 500
             );
         }
     }
-    public function storeAttendancCimanggisSecurityKanan()
+    public function storeAttendanceCimanggisSecurityKanan()
     {
         $zk = new ZKTeco('192.168.2.202', 4370, 'TCP');
         
@@ -500,22 +498,22 @@ class ApiHrisController extends Controller
                 }
             }
             if($array_post != NULL) {
-                $insert = HrisAttendance::insertOrIgnore($array_post);
+                $insert = HrisAttendance::insert($array_post);
                 return Helper::success(
                     $insert,
-                    'Data berhasil di-import ke Database'
+                    'Data attendance Kantor Cimanggis IP 192.168.2.202 berhasil di-import ke Database'
                 );
             } else {
                 return Helper::error(
                     NULL,
-                    'Data gagal diimport ke Database',
+                    'Data gagal di-import ke Database',
                     404
                 );
             }
         } else {
             return Helper::error(
                 NULL,
-                'Gagal untuk koneksi ke IP',
+                'Gagal untuk koneksi ke IP 192.168.2.202',
                 500
             );
         }
