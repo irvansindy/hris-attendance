@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ZKTecoController;
+use App\Http\Controllers\MailTestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,5 @@ Route::get('/', function () {
 });
 
 Route::get('zkteco', [ZKTecoController::class, 'index'])->name('zkteco');
+
+Route::get('sendMail', [MailTestController::class, 'sendMail'])->name('sendMail');
